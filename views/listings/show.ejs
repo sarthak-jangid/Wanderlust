@@ -82,7 +82,7 @@
           <% listing.reviews.forEach((review) => { %>
             <div class="card mb-3 p-2 col-5 ms-4">
               <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted"><%= new Date(review.createdAt).toLocaleDateString() %></h6>
+                <h5 class="card-subtitle mb-2 text-muted">Jane Doe</h5>
                 <p class="card-text">Rating: <%= review.rating %> stars</p>
                 <p class="card-text"><%= review.comment %></p>
                 <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">

@@ -9,6 +9,10 @@ const ExpressError = require("./utils/ExpressError");
 const listing = require("./routes/listing");
 const review = require("./routes/review");
 
+const session = require("express-session");
+const flash = require('connect-flash');
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -29,6 +33,29 @@ app.engine("ejs", ejsMate);
 app.get("/", (req, res) => {
   res.send("working ...");
 });
+
+// express-session .......
+app.use(
+  session({
+    secret: "mysupersecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // expire in 7 days
+      httpOnly : true
+    },
+  })
+);
+
+// connect-flash ........ 
+app.use(flash());
+
+app.use((req,res,next)=>{
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+})
 
 app.use("/listings", listing);
 app.use("/listings/:id/reviews", review);

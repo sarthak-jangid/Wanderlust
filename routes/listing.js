@@ -32,17 +32,15 @@ router.get("/new", (req, res) => {
 
 // create new listing
 // post route
-
 router.post("/", validateListing, async (req, res, next) => {
   try {
-    // console.log("Request Body:", req.body); // Log the entire request body
-    // console.log("Listing:", req.body.listing); // Log the specific property
     if (!req.body.listing) {
       throw new ExpressError(404, "send valid data for listing");
     }
 
     const newListing = new Listing(req.body.listing);
     await newListing.save();
+    req.flash("success", "New listing created successfully!");
     res.redirect("/listings");
   } catch (err) {
     next(new ExpressError(404, err));
@@ -60,7 +58,9 @@ router.get("/:id", async (req, res, next) => {
     }
     res.render("listings/show.ejs", { listing });
   } catch (err) {
-    next(new ExpressError(404, "Listing not found"));
+    req.flash("error", "Listing you requeted for does not exist!");
+    res.redirect("/listings");
+    // next(new ExpressError(404, "Listing not found"));
   }
 });
 
@@ -75,7 +75,9 @@ router.get("/:id/edit", async (req, res, next) => {
     }
     res.render("listings/edit.ejs", { listing });
   } catch (err) {
-    next(new ExpressError(404, "Listing not found"));
+    req.flash("error", "Listing you requeted for does not exist!");
+    res.redirect("/listings");
+    // next(new ExpressError(404, "Listing not found"));
   }
 });
 
@@ -96,6 +98,7 @@ router.put("/:id", validateListing, async (req, res, next) => {
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
+    req.flash("success", "Listing updated successfully!");
     res.redirect(`/listings/${id}`);
   } catch (err) {
     next(
@@ -116,6 +119,7 @@ router.delete("/:id", async (req, res, next) => {
       return next(new ExpressError(404, "Listing not found"));
     }
     await Listing.findByIdAndDelete(id);
+    req.flash("success", "Listing deleted successfully!");
     res.redirect("/listings");
   } catch (err) {
     next(new ExpressError(404, err.message));
