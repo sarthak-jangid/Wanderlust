@@ -96,12 +96,11 @@ nav {
   border: none;
   color: white;
 }
-.edit-btn:hover{  
+.edit-btn:hover {
   background-color: #fe424d;
   border: none;
   color: white;
 }
-
 
 /* submit-btn  */
 .submit-btn {
@@ -117,7 +116,7 @@ nav {
   object-position: center;
 }
 
-.btns{
+.btns {
   display: flex;
 }
 
@@ -127,7 +126,7 @@ nav {
 .alert {
   margin-top: 2rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
