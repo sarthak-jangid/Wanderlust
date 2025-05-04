@@ -17,6 +17,11 @@ async function initDB() {
     await Listing.deleteMany({});
     console.log("All existing listings deleted!");
 
+    sampleListings.data = sampleListings.data.map((obj) => ({
+      ...obj,
+      owner: "681462ce435eb79824257564",
+    }));
+
     // Insert sample data
     const insertedData = await Listing.insertMany(sampleListings.data);
     console.log(`${insertedData.length} sample listings added successfully!`);
