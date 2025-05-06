@@ -1,68 +1,27 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const Review = require("../models/reviewSchema");
-const { reviewSchema } = require("../Schema");
+// const { reviewSchema } = require("../Schema");
 const Listing = require("../models/listingSchema");
 const ExpressError = require("../utils/ExpressError");
-const { isLoggedIn, isReviewOwner } = require("../middlewares");
+// validation for reviews // isLoggedIn // isReviewOwner ..
+const {
+  isLoggedIn,
+  isReviewOwner,
+  validateReviews,
+} = require("../middlewares");
 
-// validation for reviews..
-const validateReviews = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-
-  if (error) {
-    throw new ExpressError(404, error.message);
-  } else {
-    next();
-  }
-};
+// review controller ..
+const reviewController = require('../controllers/reviewsController')
 
 // review route
 // review listing
-router.post("/", isLoggedIn, validateReviews, async (req, res, next) => {
-  try {
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-    if (!listing) {
-      throw new ExpressError(404, "Listing not found");
-    }
-    const review = new Review(req.body.review);
-    if (!review) {
-      throw new ExpressError(400, "Invalid review data");
-    }
-    listing.reviews.push(review);
-    review.author = req.user._id;
-    await review.save();
-    await listing.save();
-    req.flash("success", "new review created");
-    res.redirect(`/listings/${id}`);
-  } catch (err) {
-    next(err);
-  }
-});
+router.post("/", isLoggedIn, validateReviews, reviewController.createReview );
 
 router.delete(
   "/:reviewId",
   isLoggedIn,
   isReviewOwner,
-  async (req, res, next) => {
-    try {
-      let { id, reviewId } = req.params;
-      // First check if listing exists
-      let listing = await Listing.findById(id);
-      if (!listing) {
-        throw new ExpressError(404, "Listing not found");
-      }
-      // Remove review reference from listing
-      await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-      // Delete the actual review
-      await Review.findByIdAndDelete(reviewId);
-      req.flash("success", "review deleted successfully");
-      res.redirect(`/listings/${id}`);
-    } catch (err) {
-      next(err);
-    }
-  }
+  reviewController.destroyReview
 );
 
 module.exports = router;

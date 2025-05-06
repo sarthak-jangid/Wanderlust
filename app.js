@@ -1,3 +1,9 @@
+// .env config .....
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+// console.log(process.env);
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -73,7 +79,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.isLoggedIn = req.user  // current user 
+  res.locals.isLoggedIn = req.user; // current user
   next();
 });
 
