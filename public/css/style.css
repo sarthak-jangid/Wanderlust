@@ -117,7 +117,20 @@ nav {
 }
 
 .btns {
-  display: flex;
+  display: flex;  
+}
+
+/* category  */
+
+.dropdown-category {
+  display: inline-block;
+}
+
+.category-card {
+  border: 1.1px solid #bbb9b9fa;
+  padding: 0.2rem o.5rem 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
 }
 
 /* .................................. */

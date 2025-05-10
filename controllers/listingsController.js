@@ -21,6 +21,7 @@ module.exports.createListing = async (req, res, next) => {
     if (!req.body.listing) {
       throw new ExpressError(404, "send valid data for listing");
     }
+    console.log(req.body.listing.category);  
 
     let url = req.file.path;
     let filename = req.file.filename;
@@ -29,11 +30,25 @@ module.exports.createListing = async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
+
     await newListing.save();
     req.flash("success", "New listing created successfully!");
     res.redirect("/listings");
   } catch (err) {
     next(new ExpressError(404, err));
+  }
+};
+
+module.exports.categoryListing = async (req, res) => {
+  try {
+    let { category } = req.query;
+    // console.log(category);
+    let allListings = await Listing.find({ category });
+    // console.log(allListings);
+
+    res.render("listings/index.ejs", { allListings });
+  } catch (err) {
+    console.error("Error initializing database:", err);
   }
 };
 
@@ -71,7 +86,7 @@ module.exports.getEditForm = async (req, res, next) => {
 
     let originalImageURL = listing.image.url;
     // console.log(originalImageURL);
-    
+
     originalImageURL = originalImageURL.replace(
       "/upload",
       "/upload/h_200,w_300"

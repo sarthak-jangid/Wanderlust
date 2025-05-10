@@ -11,6 +11,19 @@ const Listing = require("../models/listingSchema");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dburl = process.env.ATLASDB_URL;
 
+// categories array .....
+const categories = [
+  "Trending",
+  "Iconic Cities",
+  "Mountains",
+  "Castles",
+  "Amazing Pools",
+  "Camping",
+  "Farms",
+  "Arctic",
+  "Boats"
+];
+
 main()
   .then((res) => console.log("connection successful ..."))
   .catch((err) => console.log(err));
@@ -27,6 +40,7 @@ async function initDB() {
     sampleListings.data = sampleListings.data.map((obj) => ({
       ...obj,
       owner: "681eb7db9729fb3ada9c1b06",
+      category : categories[Math.floor(Math.random() * categories.length)],
     }));
 
     // Insert sample data

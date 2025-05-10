@@ -1,6 +1,6 @@
 // .env config .....
 if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
+require("dotenv").config();
 }
 // console.log(process.env);
 
@@ -40,8 +40,15 @@ main()
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(dburl);
+  await mongoose.connect(dburl, {
+    ssl: true,
+    tls: true,
+    tlsAllowInvalidCertificates: true,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true
+  });
 }
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -63,7 +70,7 @@ store.on("error", (err) => {
 // express-session .......
 const sessionOptions = {
   store,
-  secret:process.env.SECRET,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {

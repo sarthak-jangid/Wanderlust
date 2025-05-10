@@ -9,11 +9,11 @@ const {
 } = require("../middlewares");
 
 // review controller ..
-const reviewController = require('../controllers/reviewsController')
+const reviewController = require("../controllers/reviewsController");
 
 // review route
 // review listing
-router.post("/", isLoggedIn, validateReviews, reviewController.createReview );
+router.post("/", isLoggedIn, validateReviews, reviewController.createReview);
 
 router.delete(
   "/:reviewId",

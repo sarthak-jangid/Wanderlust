@@ -20,6 +20,10 @@ const { isLoggedIn, isOwner, validateListing } = require("../middlewares");
 // index route ................
 router.get("/", listingsController.index);
 
+
+// category route ............... 
+router.get("/category", listingsController.categoryListing);
+
 // new route form ...........
 router.get("/new", isLoggedIn, listingsController.newListingForm);
 
@@ -32,6 +36,7 @@ router.post(
   validateListing,
   listingsController.createListing
 );
+
 
 // show the listing details
 // show route

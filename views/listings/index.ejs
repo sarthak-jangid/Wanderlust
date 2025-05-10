@@ -8,7 +8,6 @@
     width: 100%;
     overflow-x: auto;
     align-items: center;
-  
   }
   .filter {
     text-align: center;
@@ -27,11 +26,17 @@
     font-size: 0.8rem;
   }
 
+  .active {
+    opacity: 1;
+    color: #fe424d;
+    cursor: default;
+  }
+
   .tax-info {
     display: none;
   }
   .tax-toggle {
-    border: 1.6px solid  rgba(117, 112, 112, 0.671);
+    border: 1.6px solid rgba(117, 112, 112, 0.671);
     border-radius: 1rem;
     height: 3.5rem;
     padding: 1rem;
@@ -74,11 +79,10 @@
     <div><i class="fa-solid fa-snowflake"></i></div>
     <p>Arctic</p>
   </div>
-    <div class="filter">
+  <div class="filter">
     <div><i class="fa-solid fa-ship"></i></div>
     <p>Boats</p>
   </div>
-
 
   <div class="tax-toggle">
     <div class="form-check form-switch">
@@ -95,8 +99,13 @@
 </div>
 
 <div class="row mt-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-clos-1">
-  <% allListings.forEach(listing=> { %>
-  <a href="listings/<%= listing.id %>" class="listing-link">
+  <% if (allListings.length === 0) { %>
+  <div class="col-12 text-center">
+    <h3>No listings found in this category</h3>
+    <a href="/listings" class="btn btn-link">Show all listings</a>
+  </div>
+  <% } else { %> <% allListings.forEach(listing=> { %>
+  <a href="/listings/<%= listing.id %>" class="listing-link">
     <div class="card listing-card col">
       <img
         src="<%= listing.image.url %>"
@@ -115,7 +124,7 @@
       </div>
     </div>
   </a>
-  <% }) %>
+  <% }) %> <% } %>
 </div>
 
 <script>

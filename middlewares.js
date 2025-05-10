@@ -7,11 +7,11 @@ module.exports.isLoggedIn = (req, res, next) => {
   // console.log(req.path + ".." + req.originalUrl)  // it give the url that i want to go but if the  login compelete then login route redirect to the /listings ..
   if (!req.isAuthenticated()) {
     // console.log(req.params.id);
-    
+
     req.session.redirectUrl = req.originalUrl;
     req.session.listingId = req.params.id;
     // console.log(req.method);
-    
+
     req.session.reqMethod = req.method;
     req.flash("error", "you have to login ");
     return res.redirect("/login");

@@ -1,54 +1,120 @@
 <% layout('/layouts/boilerplate') %>
 
-  <div class="row">
-    <div class="col-8 offset-2">
-     <br> <br>  
-      <h1 class="mb-3" >Create New Listing</h1>
-      <form class="needs-validation" action="/listings" enctype="multipart/form-data" method="post" novalidate  >
-        <div class="mb-3">
-          <label for="title" class="form-lable">Title</label>
-          <input id="title" type="text" placeholder="Add a title" class="form-control" name="listing[title]" required >
-          <div class="invalid-feedback">
-            Please provide a valid Title.
-          </div>
+<div class="row">
+  <div class="col-8 offset-2">
+    <br />
+    <h1 class="mb-3">Create New Listing</h1>
+    <form
+      class="needs-validation"
+      action="/listings"
+      enctype="multipart/form-data"
+      method="post"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="title" class="form-lable">Title</label>
+        <input
+          id="title"
+          type="text"
+          placeholder="Add a title"
+          class="form-control"
+          name="listing[title]"
+          required
+        />
+        <div class="invalid-feedback">Please provide a valid Title.</div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-lable">Description</label>
+        <textarea
+          id="description"
+          style="resize: none"
+          class="form-control"
+          name="listing[description]"
+          cols="23"
+          rows="2"
+          placeholder="Enter discription ..."
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please provide a valid Description.</div>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-lable">Upload Listing Image</label>
+        <input
+          type="file"
+          id="image"
+          class="form-control"
+          placeholder="image url"
+          name="listing[image]"
+          required
+        />
+      </div>
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-lable">Price</label>
+          <input
+            type="number"
+            min="0"
+            name="listing[price]"
+            class="form-control"
+            id="price"
+            placeholder="999 "
+            required
+          />
+          <div class="invalid-feedback">Price should be valid.</div>
         </div>
-        <div class="mb-3">
-          <label for="description" class="form-lable">Description</label>
-          <textarea id="description" style="resize: none;" class="form-control" name="listing[description]" cols="23" rows="2"
-            placeholder="Enter discription ..." required ></textarea>
-            <div class="invalid-feedback">
-              Please provide a valid Description.
-            </div>
-        </div>
-        <div class="mb-3">
-          <label for="image" class="form-lable">Upload Listing Image</label>
-          <input type="file" id="image" class="form-control" placeholder="image url"  name="listing[image]" required >
-        </div>
-     <div class="row" >
-      <div class="mb-3 col-md-4">
-        <label for="price" class="form-lable">Price</label>
-        <input type="number" min="0" name="listing[price]" class="form-control" id="price" placeholder="999 " required >
-        <div class="invalid-feedback">
-          Price should be valid.
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-lable">Country</label>
+          <input
+            type="text"
+            id="country"
+            class="form-control"
+            name="listing[country]"
+            placeholder="India"
+            required
+          />
+          <div class="invalid-feedback">Country Name should be valid.</div>
         </div>
       </div>
-        <div class="mb-3 col-md-8 ">
-          <label for="country" class="form-lable">Country</label>
-          <input type="text" id="country" class="form-control" name="listing[country]"
-            placeholder="India" required >
-            <div class="invalid-feedback">
-              Country Name should be valid.
-            </div>
-        </div>
-     </div>
-        <div class="mb-3">
-          <label for="location" class="form-lable">Location</label>
-          <input type="text" id="location" class="form-control" name="listing[location]" placeholder="Jaipur, Rajasthan" required >
-          <div class="invalid-feedback">
-           Location should be valid.
-          </div>
-        </div><br>
-       
-        <button class="btn btn-dark mb-3 add-btn">Add</button>
-    </div>
+      <div class="mb-3">
+        <label for="location" class="form-lable">Location</label>
+        <input
+          type="text"
+          id="location"
+          class="form-control"
+          name="listing[location]"
+          placeholder="Jaipur, Rajasthan"
+          required
+        />
+        <div class="invalid-feedback">Location should be valid.</div>
+      </div>
+      <div class="dropdown dropdown-category">
+        <select
+          name="listing[category]"
+          id="category"
+          class="category-card dropdown btn dropdown-toggle"
+          id="dropdownMenu2"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          value="Trending"
+        >
+          <option class="dropdown-item" value="Trending" selected>
+            Trending
+          </option>
+          <option class="dropdown-item" value="Iconic Cities">
+            Iconic Cities
+          </option>
+          <option class="dropdown-item" value="Mountains">Mountains</option>
+          <option class="dropdown-item" value="Castles">Castles</option>
+          <option class="dropdown-item" value="Amazing Pools">
+            Amazing Pools
+          </option>
+          <option class="dropdown-item" value="Camping">Camping</option>
+          <option class="dropdown-item" value="Farms">Farms</option>
+          <option class="dropdown-item" value="Arctic">Arctic</option>
+          <option class="dropdown-item" value="Boats">Boats</option>
+        </select>
+      </div>
+      <button class="btn btn-dark mt-3 mb-3 add-btn">Add</button>
+    </form>
   </div>
+</div>
