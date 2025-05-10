@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 // const { reviewSchema } = require("../Schema");
-const Listing = require("../models/listingSchema");
-const ExpressError = require("../utils/ExpressError");
 // validation for reviews // isLoggedIn // isReviewOwner ..
 const {
   isLoggedIn,

@@ -4,7 +4,7 @@
     <div class="col-8 offset-2">
      <br> <br>  
       <h1 class="mb-3">Edit yourListing</h1>
-      <form action="/listings/<%= listing._id %>?_method=PUT" method="post" >
+      <form action="/listings/<%= listing._id %>?_method=PUT" method="post" enctype="multipart/form-data" >
         <div class="mb-3">
           <label for="title" class="form-lable">Title</label>
           <input id="title" type="text" placeholder="Add a title" class="form-control" name="listing[title]" value="<%= listing.title %>">
@@ -15,8 +15,12 @@
             placeholder="Enter discription ..."> <%= listing.description %> </textarea>
         </div>
         <div class="mb-3">
-          <label for="image" class="form-lable">Image URL</label>
-          <input type="text" id="image" class="form-control" placeholder="image url" name="listing[image]"  value="<%= listing.image %>">
+          <p class="mb-0">Previous image</p>
+          <img src="<%= originalImageURL %>"alt="Previous Listing Image" height="200" width="300" >
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-lable"> Upload New Image</label>
+          <input type="file" id="image" class="form-control" placeholder="image url" name="listing[image]"  value="<%=  listing.image.url %>">
         </div>
      <div class="row" >
       <div class="mb-3 col-md-4">

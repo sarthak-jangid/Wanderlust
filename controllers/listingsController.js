@@ -68,7 +68,16 @@ module.exports.getEditForm = async (req, res, next) => {
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-    res.render("listings/edit.ejs", { listing });
+
+    let originalImageURL = listing.image.url;
+    // console.log(originalImageURL);
+    
+    originalImageURL = originalImageURL.replace(
+      "/upload",
+      "/upload/h_200,w_300"
+    );
+
+    res.render("listings/edit.ejs", { listing, originalImageURL });
   } catch (err) {
     req.flash("error", "Listing you requeted for does not exist!");
     res.redirect("/listings");
@@ -87,6 +96,12 @@ module.exports.updateListing = async (req, res, next) => {
       { ...req.body.listing },
       { new: true }
     );
+    if (typeof req.file !== "undefined") {
+      let url = req.file.path;
+      let filename = req.file.filename;
+      listing.image = { url, filename };
+      await listing.save();
+    }
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }

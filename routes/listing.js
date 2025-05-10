@@ -28,8 +28,8 @@ router.get("/new", isLoggedIn, listingsController.newListingForm);
 router.post(
   "/",
   isLoggedIn,
+  upload.single("listing[image]"),  
   validateListing,
-  upload.single("listing[image]"),
   listingsController.createListing
 );
 
@@ -46,6 +46,7 @@ router.put(
   "/:id",
   isLoggedIn,
   isOwner,
+  upload.single("listing[image]"),  
   validateListing,
   listingsController.updateListing
 );

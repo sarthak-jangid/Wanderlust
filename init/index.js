@@ -1,15 +1,22 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const mongoose = require("mongoose");
 const sampleListings = require("./data");
 const Listing = require("../models/listingSchema");
 
 // console.log(sampleListings);
 
+
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dburl = process.env.ATLASDB_URL;
+
 main()
   .then((res) => console.log("connection successful ..."))
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+  await mongoose.connect(dburl);
 }
 async function initDB() {
   try {
@@ -19,7 +26,7 @@ async function initDB() {
 
     sampleListings.data = sampleListings.data.map((obj) => ({
       ...obj,
-      owner: "681462ce435eb79824257564",
+      owner: "681eb7db9729fb3ada9c1b06",
     }));
 
     // Insert sample data

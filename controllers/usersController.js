@@ -1,11 +1,10 @@
 const User = require("../models/userSchema");
 
-
 module.exports.getSignUpForm = (req, res) => {
   res.render("users/signup");
-}
+};
 
-module.exports.signup =  async (req, res, next) => {
+module.exports.signup = async (req, res, next) => {
   try {
     let { username, email, password } = req.body;
     const user = new User({
@@ -22,7 +21,7 @@ module.exports.signup =  async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", "Welcome back to Wanderlust!");
+      req.flash("success", "Welcome to Wanderlust!");
       res.redirect("/listings");
     });
 
@@ -31,13 +30,13 @@ module.exports.signup =  async (req, res, next) => {
     req.flash("error", err.message);
     res.redirect("/signup");
   }
-}
+};
 
-module.exports.getLogInForm =  (req, res) => {
+module.exports.getLogInForm = (req, res) => {
   res.render("users/login");
-}
+};
 
-module.exports.login =  (req, res) => {
+module.exports.login = (req, res) => {
   req.flash("success", "Welcome back to Wanderlust!");
   // console.log(req.session.redirectUrl);  // you're right! The issue is related to how sessions are being handled during the authentication process. The problem occurs because Passport is creating a new session after authentication, which causes the loss of your redirectUrl.
   // console.log(req.path);
@@ -51,9 +50,9 @@ module.exports.login =  (req, res) => {
 
   // delete req.session.redirectUrl;
   res.redirect(redirectUrl);
-}
+};
 
-module.exports.logout =  (req, res, next) => {
+module.exports.logout = (req, res, next) => {
   req.flash("success", "LogOut successful!"); // Correct key
   req.logOut((err) => {
     if (err) {
@@ -61,4 +60,4 @@ module.exports.logout =  (req, res, next) => {
     }
     res.redirect("/listings");
   });
-}
+};
