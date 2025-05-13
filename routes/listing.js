@@ -20,8 +20,7 @@ const { isLoggedIn, isOwner, validateListing } = require("../middlewares");
 // index route ................
 router.get("/", listingsController.index);
 
-
-// category route ............... 
+// category route ...............
 router.get("/category", listingsController.categoryListing);
 
 // new route form ...........
@@ -32,11 +31,14 @@ router.get("/new", isLoggedIn, listingsController.newListingForm);
 router.post(
   "/",
   isLoggedIn,
-  upload.single("listing[image]"),  
+  upload.single("listing[image]"),
   validateListing,
   listingsController.createListing
 );
 
+// search route ...........
+// search listing
+router.get("/search", listingsController.searchListing);
 
 // show the listing details
 // show route
@@ -51,7 +53,7 @@ router.put(
   "/:id",
   isLoggedIn,
   isOwner,
-  upload.single("listing[image]"),  
+  upload.single("listing[image]"),
   validateListing,
   listingsController.updateListing
 );

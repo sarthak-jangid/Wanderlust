@@ -23,7 +23,7 @@ filters.forEach((filter) => {
   const filterText = filter.querySelector("p").innerText;
   
   // Set active class if this is current category
-  console.log(filterText, currentCategory);
+  // console.log(filterText, currentCategory);
   
   if (currentCategory && filterText === currentCategory) {
     filter.classList.add("active");

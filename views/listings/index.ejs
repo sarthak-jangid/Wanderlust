@@ -101,7 +101,7 @@
 <div class="row mt-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-clos-1">
   <% if (allListings.length === 0) { %>
   <div class="col-12 text-center">
-    <h3>No listings found in this category</h3>
+    <h3>No listings found in this <%= message %></h3>
     <a href="/listings" class="btn btn-link">Show all listings</a>
   </div>
   <% } else { %> <% allListings.forEach(listing=> { %>

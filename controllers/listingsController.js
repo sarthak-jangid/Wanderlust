@@ -21,7 +21,7 @@ module.exports.createListing = async (req, res, next) => {
     if (!req.body.listing) {
       throw new ExpressError(404, "send valid data for listing");
     }
-    console.log(req.body.listing.category);  
+    console.log(req.body.listing.category);
 
     let url = req.file.path;
     let filename = req.file.filename;
@@ -46,7 +46,9 @@ module.exports.categoryListing = async (req, res) => {
     let allListings = await Listing.find({ category });
     // console.log(allListings);
 
-    res.render("listings/index.ejs", { allListings });
+    let message = "category";
+
+    res.render("listings/index.ejs", { allListings, message });
   } catch (err) {
     console.error("Error initializing database:", err);
   }
@@ -145,4 +147,15 @@ module.exports.destroyListing = async (req, res, next) => {
   } catch (err) {
     next(new ExpressError(404, err.message));
   }
+};
+
+// search listing ............................
+module.exports.searchListing = async (req, res) => {
+  let { country, location } = req.query;
+  let allListings = await Listing.find({
+    country: country,
+    location: location,
+  });
+  // console.log(allListings);
+  res.render("listings/index.ejs", { allListings, message: " Location !" });
 };
