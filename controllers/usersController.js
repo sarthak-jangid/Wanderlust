@@ -38,10 +38,6 @@ module.exports.getLogInForm = (req, res) => {
 
 module.exports.login = (req, res) => {
   req.flash("success", "Welcome back to Wanderlust!");
-  // console.log(req.session.redirectUrl);  // you're right! The issue is related to how sessions are being handled during the authentication process. The problem occurs because Passport is creating a new session after authentication, which causes the loss of your redirectUrl.
-  // console.log(req.path);
-  // console.log(res.locals.listingId);
-
   if (res.locals.reqMethod === "DELETE") {
     return res.redirect(`/listings/${res.locals.listingId}`);
   }

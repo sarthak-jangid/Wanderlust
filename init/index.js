@@ -7,6 +7,9 @@ const Listing = require("../models/listingSchema");
 
 // console.log(sampleListings);
 
+// getCoordinates .................
+
+const getCoordinates = require("../getCoordinates");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dburl = process.env.ATLASDB_URL;
@@ -21,7 +24,7 @@ const categories = [
   "Camping",
   "Farms",
   "Arctic",
-  "Boats"
+  "Boats",
 ];
 
 main()
@@ -31,25 +34,36 @@ main()
 async function main() {
   await mongoose.connect(dburl);
 }
-async function initDB() {
-  try {
-    // Delete all existing listings
-    await Listing.deleteMany({});
-    console.log("All existing listings deleted!");
-
-    sampleListings.data = sampleListings.data.map((obj) => ({
-      ...obj,
-      owner: "681eb7db9729fb3ada9c1b06",
-      category : categories[Math.floor(Math.random() * categories.length)],
-    }));
-
-    // Insert sample data
-    const insertedData = await Listing.insertMany(sampleListings.data);
-    console.log(`${insertedData.length} sample listings added successfully!`);
-  } catch (err) {
-    console.error("Error initializing database:", err);
+async function work() {
+  // Add coordinates - use for...of to wait for each async call
+  for (const listing of sampleListings.data) {
+    listing.coordinates = await getCoordinates(listing.location);
   }
+
+  async function initDB() {
+    try {
+      // Delete all existing listings
+      await Listing.deleteMany({});
+      console.log("All existing listings deleted!");
+
+      // Add owner and category to each listing
+      const updatedListings = await Promise.all(
+        sampleListings.data.map(async (obj) => ({
+          ...obj,
+          owner: "681eb7db9729fb3ada9c1b06",
+          category: categories[Math.floor(Math.random() * categories.length)],
+        }))
+      );
+
+      // Insert updated listings
+      const insertedData = await Listing.insertMany(updatedListings);
+      console.log(`${insertedData.length} sample listings added successfully!`);
+    } catch (err) {
+      console.error("Error initializing database:", err);
+    }
+  }
+
+  await initDB(); // Wait for DB init to complete
 }
 
-// Run the initialization
-initDB();
+work();

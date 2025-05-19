@@ -1,5 +1,6 @@
 const Listing = require("../models/listingSchema");
 const ExpressError = require("../utils/ExpressError");
+const getCoordinates = require("../getCoordinates");
 
 module.exports.index = async (req, res) => {
   try {
@@ -21,16 +22,19 @@ module.exports.createListing = async (req, res, next) => {
     if (!req.body.listing) {
       throw new ExpressError(404, "send valid data for listing");
     }
-    console.log(req.body.listing.category);
+    // console.log(req.body.listing.category);
 
     let url = req.file.path;
     let filename = req.file.filename;
     // console.log(path,filename);
 
+    let coordinates = await getCoordinates(req.body.listing.location);
+    console.log(coordinates);
+
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
-
+    newListing.coordinates = coordinates;
     await newListing.save();
     req.flash("success", "New listing created successfully!");
     res.redirect("/listings");

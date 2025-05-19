@@ -40,6 +40,10 @@ const listingSchema = mongoose.Schema({
     ],
     required: true,
   },
+  coordinates: {
+    type: Object,
+    required: true,
+  },
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
