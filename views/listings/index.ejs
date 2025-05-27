@@ -103,7 +103,7 @@
 
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-clos-1">
   <% if (allListings.length === 0) { %>
-  <div class="col-13 text-center">
+  <div class="col-12 text-center">
     <h3>No listings found in this <%= message %></h3>
     <a href="/listings" class="btn btn-link">Show all listings</a>
   </div>
@@ -121,8 +121,10 @@
         <p class="card-text">
           <b> <%= listing.title %> </b><br />
           &#8377;<%= listing.price.toLocaleString("en-IN") %>/night
-          
-          <i class="tax-info">&nbsp;&nbsp; + &#8377;<%- (listing.price*18)/100 %>  &nbsp;(18% GST) </i>
+
+          <i class="tax-info"
+            >&nbsp;&nbsp; + &#8377;<%- (listing.price*18)/100 %> &nbsp;(18% GST)
+          </i>
         </p>
       </div>
     </div>
@@ -139,11 +141,9 @@
         info.style.display = "inline";
         document.querySelector(".tax-toggle").style.boxShadow =
           "-1px 3px 6px gray";
-
       } else {
         info.style.display = "none";
-          document.querySelector(".tax-toggle").style.boxShadow = "none";
-          
+        document.querySelector(".tax-toggle").style.boxShadow = "none";
       }
     });
   });

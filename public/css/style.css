@@ -22,7 +22,6 @@ nav {
 
 .nav-link {
   color: #222222 !important;
-
 }
 
 .f-info-links a {
@@ -68,15 +67,16 @@ nav {
   scale: 0.99;
   box-shadow: -2px 0px 16px gray;
 }
-.listing-link {
+
+/* .listing-link {
   width: 31%;
   margin-right: 30px;
-  margin-top: 1%;
-  /* border: 1px solid #ddd; */
-  transition: all ease 0.29s;
+  margin-top: 1%; */
+/* border: 1px solid #ddd; */
+/* transition: all ease 0.29s; */
 
-}
-.listing-link:hover {
+/* } */
+/* .listing-link:hover {
   scale: 1.048 !important;
 }
 
@@ -86,11 +86,34 @@ nav {
 .card-text{
   margin-top: 3%;
   margin-left: 5%;
+} */
+
+.listing-link {
+  text-decoration: none !important;
+  color: #222222 !important;
 }
 
 .listing-link {
   text-decoration: none !important;
   color: #222222 !important;
+  display: block;
+  transform: scale(0.95);
+
+  transition: transform 0.3s ease;
+
+}
+
+.listing-link:hover {
+  transform: scale(1);
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-text {
+  margin-top: 3%;
+  margin-left: 5%;
 }
 
 /* Card Effect  */
