@@ -1,6 +1,6 @@
 // .env config .....
 if (process.env.NODE_ENV != "production") {
-require("dotenv").config();
+  require("dotenv").config();
 }
 // console.log(process.env);
 
@@ -48,7 +48,6 @@ async function main() {
     // useUnifiedTopology: true
   });
 }
-
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -100,6 +99,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.isLoggedIn = req.user; // current user
+
   next();
 });
 

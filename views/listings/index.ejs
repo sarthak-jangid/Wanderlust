@@ -8,18 +8,21 @@
     width: 100%;
     overflow-x: auto;
     align-items: center;
+    /* border: 1px solid red; */
+    height: 7rem;
   }
   .filter {
     text-align: center;
     margin-left: 2px;
     margin-right: 2rem;
     margin-top: 2rem;
-    margin-bottom: 0px;
     opacity: 0.7;
+    transition: all 0.1s ease-in-out;
   }
   .filter:hover {
     opacity: 1;
     cursor: pointer;
+    scale: 1.1;
   }
 
   .filter p {
@@ -37,11 +40,11 @@
   }
   .tax-toggle {
     border: 1.6px solid rgba(117, 112, 112, 0.671);
-    border-radius: 1rem;
+    border-radius: 4.5rem;
     height: 3.5rem;
     padding: 1rem;
-    margin-left: 10rem;
-    margin-top: 0.5rem;
+    margin-left: 17rem;
+    /* margin-top: 0.5rem; */
   }
 </style>
 
@@ -92,15 +95,15 @@
         id="flexSwitchCheckDefault"
       />
       <label class="form-check-label" for="flexSwitchCheckDefault"
-        >Display Total after taxes</label
+        >Display Taxes</label
       >
     </div>
   </div>
 </div>
 
-<div class="row mt-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-clos-1">
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-clos-1">
   <% if (allListings.length === 0) { %>
-  <div class="col-12 text-center">
+  <div class="col-13 text-center">
     <h3>No listings found in this <%= message %></h3>
     <a href="/listings" class="btn btn-link">Show all listings</a>
   </div>
@@ -118,8 +121,8 @@
         <p class="card-text">
           <b> <%= listing.title %> </b><br />
           &#8377;<%= listing.price.toLocaleString("en-IN") %>/night
-
-          <i class="tax-info">&nbsp;&nbsp;+18% GST </i>
+          
+          <i class="tax-info">&nbsp;&nbsp; + &#8377;<%- (listing.price*18)/100 %>  &nbsp;(18% GST) </i>
         </p>
       </div>
     </div>
@@ -134,8 +137,13 @@
     taxInfo.forEach((info) => {
       if (taxSwitch.checked) {
         info.style.display = "inline";
+        document.querySelector(".tax-toggle").style.boxShadow =
+          "-1px 3px 6px gray";
+
       } else {
         info.style.display = "none";
+          document.querySelector(".tax-toggle").style.boxShadow = "none";
+          
       }
     });
   });
