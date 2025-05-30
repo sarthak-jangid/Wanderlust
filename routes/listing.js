@@ -11,6 +11,7 @@ const upload = multer({ storage }); // uploads  ka ak folder banega automaticall
 
 // Controllers ...
 const listingsController = require("../controllers/listingsController");
+const paymentProcessController = require("../controllers/paymentProcessController");
 
 // require you are loggedIn or not ...............
 // validation for listing ........................
@@ -60,5 +61,21 @@ router.put(
 // delete listing ..
 // delete route
 router.delete("/:id", isLoggedIn, isOwner, listingsController.destroyListing);
+
+// Get Razorpay key route
+router.get("/getKey", (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      key: process.env.RAZORPAY_API_KEY,
+    });
+  } catch (error) {
+    console.error("Error getting Razorpay key:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get Razorpay key",
+    });
+  }
+});
 
 module.exports = router;

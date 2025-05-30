@@ -1,12 +1,11 @@
 <% layout('/layouts/boilerplate') %>
 
-
 <script>
- const  listing = <%- JSON.stringify(listing) %>;
+  const listing = <%- JSON.stringify(listing) %>;
 </script>
 
 <style>
-  .card-img-top{
+  .card-img-top {
     height: 50vh;
     /* margin-top: 2vh; */
     /* width: 70vw; */
@@ -17,8 +16,8 @@
 </style>
 
   <div class="row">
-    <div class="col-8 offset-2 mt-4">
-      <h3 class="" >Listing Details :</h3>
+    <div class="col-8 offset-2 mt-4 mb-1">
+      <h3 >Listing Details :</h3>
     </div>
     <div class="card listing-card col-8 offset-2">
       <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="Listing_image"  />
@@ -36,22 +35,53 @@
       </div>
     </div>
 
-    <div class="btns  ">
+    <div class="btns mb-4 ">
       <% if (isLoggedIn && isLoggedIn._id.equals(listing.owner._id)) { %>
         <a href="/listings/<%= listing._id%>/edit" class="btn edit-btn col-1 offset-2">Edit
         </a>
 
         <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
           <button class="btn btn-dark offset-5">Delete</button>
-        </form>
+        </form> 
         <% } %>
     </div> 
-    
-    <!-- <hr>   -->
+      
+    <hr class="col-10 offset-1" />   
+
+    <div class="book-listing col-10 offset-1 mt-4 border border-1 rounded-3 mb-2" style="background-color: rgba(128, 128, 128, 0.096);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.363) ;" > 
+         <div class="book-listing-container d-flex flex-column align-items-center p-3 pb-1">          <h3 class="mb-3">Book Your Stay</h3>
+          <div>
+            <form id="book-listing-form" class="needs-validation" novalidate>
+              <div class="form-group">
+                <label for="nights">Number of Nights:</label>  &nbsp; 
+                <input type="number" 
+                       id="nights" 
+                       name="nights" 
+                       min="1" 
+                       max="29" 
+                       value="1" 
+                       class="form-control-inline"
+                       required
+                       oninput="validateNights(this)"> &nbsp; &nbsp;
+                <button type="submit" class="btn btn-primary" id="bookBtn">Book Now</button>
+                <div class="invalid-feedback" style="display: none;" id="nightsError">
+                  Please enter a number between 1 and 29 nights.
+                </div>
+              </div>
+            </form>
+          </div>
+          <p style="font-size: 16px;
+          color:gray;
+          margin-top:1vh;">*Note : max 30 days pre booking</p>
+         </div>
+     </div> 
+     
+
            <div class="col-10 offset-1 mt-2" >
              <h2 class="mt-3 mb-4 offset-4" >Where you'll be?</h2>
                 <div style="height: 480px; 
-       margin-bottom: 2vh; border-radius: 2rem; " id="map"></div>
+       margin-bottom: 2vh; border-radius: 2rem;" id="map"></div>
            </div>
 
     <div class="row">
@@ -141,7 +171,6 @@
     </div>
     
   </div>
-
-
-
   <script src="/js/map.js"></script>
+  <script src="/js/payment.js" ></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

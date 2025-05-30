@@ -12,9 +12,13 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const PORT = 8080;
 const ExpressError = require("./utils/ExpressError");
+const cors = require("cors");
+
+//route imports
 const listingRoute = require("./routes/listing");
 const reviewRoute = require("./routes/review");
 const userRoute = require("./routes/user");
+const paymentRoute = require("./routes/payment");
 
 // reuire passport and passport-local library for authentication
 const passport = require("passport");
@@ -26,6 +30,9 @@ const User = require("./models/userSchema");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
+
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -122,6 +129,7 @@ app.get("/", (req, res) => {
 app.use("/listings", listingRoute);
 app.use("/listings/:id/reviews", reviewRoute);
 app.use("/", userRoute);
+app.use("/", paymentRoute); // Mount payment routes
 
 app.use((req, res, next) => {
   next(new ExpressError(404, "page not found !"));

@@ -1,6 +1,6 @@
 var map = L.map("map").setView(
   [listing.coordinates.lat, listing.coordinates.lng],
-  10
+  12
 );
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -11,7 +11,8 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 var marker = L.marker([listing.coordinates.lat, listing.coordinates.lng])
   .addTo(map)
-  .bindPopup("You are here")
+  .bindPopup("here the location of the listing")
+  .setPopupContent(listing.title)
   .openPopup();
 
 var circle = L.circle([listing.coordinates.lat, listing.coordinates.lng], {
