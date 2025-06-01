@@ -63,17 +63,24 @@
                        value="1" 
                        class="form-control-inline"
                        required
+                    <%= !isLoggedIn ? 'disabled' : '' %>
                        oninput="validateNights(this)"> &nbsp; &nbsp;
-                <button type="submit" class="btn btn-primary" id="bookBtn">Book Now</button>
+                <button type="submit" class="btn btn-primary" id="bookBtn" <%= !isLoggedIn ? 'disabled' : '' %>>Book Now</button>
                 <div class="invalid-feedback" style="display: none;" id="nightsError">
                   Please enter a number between 1 and 29 nights.
                 </div>
               </div>
             </form>
           </div>
-          <p style="font-size: 16px;
+           <% if (isLoggedIn) { %>
+               <p style="font-size: 16px;
           color:gray;
           margin-top:1vh;">*Note : max 30 days pre booking</p>
+           <% } else {  %>
+                <p style="font-size: 16px;
+          color:red;
+          margin-top:1vh;">*Note : please Login/Sign-up first to Book your Stay</p>
+            <% } %>
          </div>
      </div> 
      
