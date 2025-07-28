@@ -49,11 +49,11 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.logout = (req, res, next) => {
-  req.flash("success", "LogOut successful!"); // Correct key
   req.logOut((err) => {
     if (err) {
       return next(err);
     }
+    req.flash("success", "LogOut successful!"); // Correct key
     res.redirect("/listings");
   });
 };
