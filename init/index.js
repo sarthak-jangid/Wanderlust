@@ -37,7 +37,13 @@ async function main() {
 async function work() {
   // Add coordinates - use for...of to wait for each async call
   for (const listing of sampleListings.data) {
-    listing.coordinates = await getCoordinates(listing.location);
+    try {
+      const coords = await getCoordinates(listing.location);
+      listing.coordinates = coords || { lat: 0, lng: 0 }; // Fallback coordinates if geocoding fails
+    } catch (error) {
+      console.error(`Failed to get coordinates for ${listing.location}`);
+      listing.coordinates = { lat: 0, lng: 0 }; // Fallback coordinates
+    }
   }
 
   async function initDB() {
