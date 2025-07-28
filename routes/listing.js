@@ -78,4 +78,31 @@ router.get("/getKey", (req, res) => {
   }
 });
 
+router.post("/", upload.single("listing[image]"), async (req, res) => {
+  try {
+    let listing = req.body.listing;
+
+    // Get coordinates before saving
+    const coordinates = await getCoordinates(listing.location);
+    if (!coordinates) {
+      // Provide default coordinates if geocoding fails
+      listing.coordinates = { lat: 0, lng: 0 };
+    } else {
+      listing.coordinates = coordinates;
+    }
+
+    const newListing = new Listing(listing);
+    newListing.owner = req.user._id;
+    newListing.image = { url: result.secure_url, filename: result.public_id };
+    await newListing.save();
+
+    req.flash("success", "New Listing Created!");
+    res.redirect("/listings");
+  } catch (err) {
+    console.error("Error creating listing:", err);
+    req.flash("error", "Error creating listing");
+    res.redirect("/listings/new");
+  }
+});
+
 module.exports = router;

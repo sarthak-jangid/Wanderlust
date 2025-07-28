@@ -19,27 +19,48 @@ module.exports.newListingForm = (req, res) => {
 
 module.exports.createListing = async (req, res, next) => {
   try {
+    // Validate request body
     if (!req.body.listing) {
-      throw new ExpressError(404, "send valid data for listing");
+      throw new ExpressError(400, "Missing listing data");
     }
-    // console.log(req.body.listing.category);
 
-    let url = req.file.path;
-    let filename = req.file.filename;
-    // console.log(path,filename);
+    // Validate file upload
+    if (!req.file) {
+      throw new ExpressError(400, "Image is required");
+    }
 
-    let coordinates = await getCoordinates(req.body.listing.location);
-    console.log(coordinates);
+    // Get image details
+    const { path: url, filename } = req.file;
 
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
-    newListing.image = { url, filename };
-    newListing.coordinates = coordinates;
+    // Get coordinates with error handling
+    const coordinates = await getCoordinates(req.body.listing.location);
+    if (!coordinates) {
+      throw new ExpressError(400, "Invalid location or geocoding failed");
+    }
+
+    // Create new listing with validated data
+    const newListing = new Listing({
+      ...req.body.listing,
+      owner: req.user._id,
+      image: { url, filename },
+      coordinates,
+    });
+
+    // Save listing
     await newListing.save();
+
+    // Success response
     req.flash("success", "New listing created successfully!");
     res.redirect("/listings");
   } catch (err) {
-    next(new ExpressError(404, err));
+    // Better error handling
+    if (err instanceof ExpressError) {
+      req.flash("error", err.message);
+    } else {
+      req.flash("error", "Failed to create listing");
+      console.error("Listing creation error:", err);
+    }
+    res.redirect("/listings/new");
   }
 };
 

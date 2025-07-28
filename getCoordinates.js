@@ -1,29 +1,41 @@
-// Install: npm install node-geocoder
-const NodeGeocoder = require("node-geocoder");
+// Install: npm install axios
+const axios = require("axios");
 
-const options = {
-  provider: "openstreetmap",
-  httpAdapter: "https",
-  userAgent: "MyAirbnbProject/1.0", // Identify your application
-  formatter: null
-};
-
-const geocoder = NodeGeocoder(options);
-
-async function getCoordinates(locationName) {
+async function getCoordinates(address) {
   try {
-    // Add delay to respect rate limits (1 request per second)
+    // Add delay to respect rate limits
     await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Encode the address for URL
+    const encodedAddress = encodeURIComponent(address);
     
-    const res = await geocoder.geocode(locationName);
-    if (!res || !res.length) {
-      console.log(`No coordinates found for: ${locationName}`);
-      return null;
+    // Make request to Nominatim API
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'AirbnbClone/1.0', // Identify your application
+          'Referer': 'https://your-app-domain.com' // Replace with your domain
+        }
+      }
+    );
+
+    // Check if we got results
+    if (response.data && response.data.length > 0) {
+      const location = response.data[0];
+      return {
+        lat: parseFloat(location.lat),
+        lng: parseFloat(location.lon)
+      };
     }
-    return { lat: res[0].latitude, lng: res[0].longitude };
+
+    // Return null if no results found
+    console.log(`No coordinates found for address: ${address}`);
+    return { lat: 0, lng: 0 };
+
   } catch (error) {
-    console.error(`Error geocoding ${locationName}:`, error.message);
-    return null;
+    console.error('Error getting coordinates:', error.message);
+    return { lat: 0, lng: 0 }; // Fallback coordinates
   }
 }
 
