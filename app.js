@@ -129,14 +129,21 @@ app.get("/", (req, res) => {
 app.use("/listings", listingRoute);
 app.use("/listings/:id/reviews", reviewRoute);
 app.use("/", userRoute);
-app.use("/", paymentRoute); // Mount payment routes
+app.use("/", paymentRoute);
 
+// 404 handler - should come after all routes
 app.use((req, res, next) => {
   next(new ExpressError(404, "page not found !"));
 });
 
+// Error handler - MUST be last middleware with 4 parameters
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "SOMETHING WENT WRONG!" } = err;
+  
+  if (res.headersSent) {
+    return next(err);
+  }
+  
   res.status(statusCode).render("listings/error.ejs", { err });
 });
 
