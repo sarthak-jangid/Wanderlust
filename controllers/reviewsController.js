@@ -13,9 +13,9 @@ module.exports.createReview = async (req, res, next) => {
     if (!review) {
       throw new ExpressError(400, "Invalid review data");
     }
-    listing.reviews.push(review);
     review.author = req.user._id;
     await review.save();
+    listing.reviews.push(review._id);
     await listing.save();
     req.flash("success", "new review created");
     res.redirect(`/listings/${id}`);
@@ -27,14 +27,11 @@ module.exports.createReview = async (req, res, next) => {
 module.exports.destroyReview = async (req, res, next) => {
   try {
     let { id, reviewId } = req.params;
-    // First check if listing exists
     let listing = await Listing.findById(id);
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-    // Remove review reference from listing
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    // Delete the actual review
     await Review.findByIdAndDelete(reviewId);
     req.flash("success", "review deleted successfully");
     res.redirect(`/listings/${id}`);
