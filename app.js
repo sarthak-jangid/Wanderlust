@@ -51,8 +51,6 @@ async function main() {
     ssl: true,
     tls: true,
     tlsAllowInvalidCertificates: true,
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true
   });
 }
 
@@ -63,8 +61,7 @@ app.engine("ejs", ejsMate);
 //  mongos store ...........
 const store = MongoStore.create({
   mongoUrl: dburl,
-  secret: process.env.SECRET,
-  touchAfter: 24 * 60 * 60, // time in seconds
+  touchAfter: 24 * 60 * 60,
 });
 
 store.on("error", (err) => {
@@ -79,9 +76,9 @@ const sessionOptions = {
   saveUninitialized: true,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    maxAge: 7 * 24 * 60 * 60 * 1000, // expire in 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // HTTPS only in production
+    secure: process.env.NODE_ENV === "production",
   },
 };
 
