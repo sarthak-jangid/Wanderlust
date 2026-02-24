@@ -69,16 +69,20 @@ store.on("error", (err) => {
 });
 
 // express-session .......
+const isProduction = process.env.NODE_ENV === "production";
+
+app.set("trust proxy", 1); // VERY IMPORTANT for Render
+
 const sessionOptions = {
   store,
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
   },
 };
 
@@ -134,13 +138,23 @@ app.use((req, res, next) => {
 
 // Error handler - MUST be last middleware with 4 parameters
 app.use((err, req, res, next) => {
-  let { statusCode = 500, message = "SOMETHING WENT WRONG!" } = err;
-  
+  let statusCode = err.statusCode || 500;
+  let message = err.message || "SOMETHING WENT WRONG!";
+
+  // Prevent double response
   if (res.headersSent) {
     return next(err);
   }
-  
-  res.status(statusCode).render("listings/error.ejs", { err });
+
+  // Log error for debugging
+  console.error("Error:", err);
+
+  res.status(statusCode).render("listings/error.ejs", { 
+    err: {
+      statusCode,
+      message
+    }
+  });
 });
 
 app.listen(PORT, () => {
