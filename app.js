@@ -63,9 +63,7 @@ app.engine("ejs", ejsMate);
 //  mongos store ...........
 const store = MongoStore.create({
   mongoUrl: dburl,
-  crypto: {
-    secret: process.env.SECRET,
-  },
+  secret: process.env.SECRET,
   touchAfter: 24 * 60 * 60, // time in seconds
 });
 
@@ -83,6 +81,7 @@ const sessionOptions = {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000, // expire in 7 days
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // HTTPS only in production
   },
 };
 
